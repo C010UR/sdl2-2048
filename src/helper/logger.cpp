@@ -1,19 +1,13 @@
-#include "app.h"
+#include "helper/logger.h"
 
-#include <chrono>
-#include <ctime>
-
-App::App(bool isDebug, int ups, int fps)
+Logger::Logger(bool isDebug)
 {
-    this->isDebug   = isDebug;
-    this->isRunning = true;
-    this->ups       = ups;
-    this->fps       = fps;
+    this->isDebug = isDebug;
 }
 
-void App::log(std::string message, App::LogLevel logLevel)
+void Logger::log(std::string message, Logger::LogLevel logLevel)
 {
-    if (!this->isDebug && (logLevel == App::LogLevel::DEBUG || logLevel == App::LogLevel::WARNING)) {
+    if (!this->isDebug && (logLevel == Logger::LogLevel::DEBUG || logLevel == Logger::LogLevel::WARNING)) {
         return;
     }
 
@@ -21,15 +15,15 @@ void App::log(std::string message, App::LogLevel logLevel)
     std::string prefix    = "";
 
     switch (logLevel) {
-        case App::LogLevel::WARNING:
+        case Logger::LogLevel::WARNING:
             colorCode = 33;
             prefix    = "Warning: ";
             break;
-        case App::LogLevel::ERROR:
+        case Logger::LogLevel::ERROR:
             colorCode = 31;
             prefix    = "Error: ";
             break;
-        case App::LogLevel::INFO:
+        case Logger::LogLevel::INFO:
             colorCode = 36;
             break;
         default:

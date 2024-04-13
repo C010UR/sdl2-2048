@@ -1,4 +1,4 @@
-#include "game_object.h"
+#include "core/game_object.h"
 
 void GameObject::render()
 {

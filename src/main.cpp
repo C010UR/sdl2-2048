@@ -1,7 +1,9 @@
-#include "app.h"
+#include "core/app.h"
 
-int main(int argc, char *argv[])
+int main(int argv, char** args)
 {
-    App app;
+    Logger logger(true);
+    App    app(&logger);
+
     return app.run();
 }

@@ -1,5 +1,4 @@
-#include "SDL_timer.h"
-#include "app.h"
+#include "core/app.h"
 
 int App::run()
 {

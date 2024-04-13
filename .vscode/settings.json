@@ -1,4 +1,4 @@
 {
-    "C_Cpp.default.compileCommands": "c:\\Users\\colour\\Desktop\\2048\\build/compile_commands.json",
+    "C_Cpp.default.compileCommands": "c:\\Users\\colour\\Desktop\\sdl2-2048\\build/compile_commands.json",
     "C_Cpp.default.configurationProvider": "mesonbuild.mesonbuild"
 }
