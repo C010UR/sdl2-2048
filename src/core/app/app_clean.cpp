@@ -2,7 +2,7 @@
 
 void App::clean()
 {
-    this->logger->log("Cleaning the SDL", Logger::LogLevel::INFO);
+    this->logger->log("App::clean", "Cleaning the SDL", Logger::LogLevel::INFO);
 
     SDL_DestroyWindow(this->gWindow);
     this->gWindow = nullptr;

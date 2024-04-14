@@ -2,7 +2,7 @@
 
 #include "SDL_events.h"
 #include "SDL_render.h"
-#include "game_object.h"
+#include "SDL_ttf.h"
 #include "helper/logger.h"
 
 #include <SDL.h>
@@ -20,10 +20,37 @@ class App
 
     SDL_Window   *gWindow   = nullptr;
     SDL_Renderer *gRenderer = nullptr;
+    TTF_Font     *font      = nullptr;
+    TTF_Font     *smallFont = nullptr;
 
-    std::vector<std::vector<GameObject>> gameObjects;
+    std::vector<std::vector<int>> blocks;
+
+    int score = 0;
 
     Logger *logger = nullptr;
+
+    int gridX    = 0;
+    int gridY    = 0;
+    int gridSize = 0;
+
+    void renderRectangle(int x1, int y1, int x2, int y2, SDL_Color color);
+    void renderText(std::string msg, int x, int y, SDL_Color fg, SDL_Color bg, bool isSmall = false);
+    void renderGrid();
+    void renderScore();
+    void renderBlocks();
+    void renderBlock(int x, int y);
+
+    int moveX = 0;
+    int moveY = 0;
+
+    void initBoard();
+    void addBlock();
+    int moveLeft();
+    int moveRight();
+    int moveUp();
+    int moveDown();
+    int moveHorizontal(int x, int y, int direction);
+    int moveVertical(int x, int y, int direction);
 
   public:
     App(Logger *logger, int ups = 60, int fps = -1);

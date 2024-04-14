@@ -1,27 +1,27 @@
 #include "helper/logger.h"
 
+#include <iomanip>
+#include <sstream>
+
 Logger::Logger(bool isDebug)
 {
     this->isDebug = isDebug;
 }
 
-void Logger::log(std::string message, Logger::LogLevel logLevel)
+void Logger::log(std::string method, std::string message, Logger::LogLevel logLevel)
 {
     if (!this->isDebug && (logLevel == Logger::LogLevel::DEBUG || logLevel == Logger::LogLevel::WARNING)) {
         return;
     }
 
-    int         colorCode = 0;
-    std::string prefix    = "";
+    int colorCode = 0;
 
     switch (logLevel) {
         case Logger::LogLevel::WARNING:
             colorCode = 33;
-            prefix    = "Warning: ";
             break;
         case Logger::LogLevel::ERROR:
             colorCode = 31;
-            prefix    = "Error: ";
             break;
         case Logger::LogLevel::INFO:
             colorCode = 36;
@@ -34,7 +34,24 @@ void Logger::log(std::string message, Logger::LogLevel logLevel)
     std::time_t t   = std::time(0);
     std::tm    *now = std::localtime(&t);
 
-    std::cout << "\033[" << colorCode << "m[" << (now->tm_year + 1900) << "-" << (now->tm_mon + 1) << "-"
-              << now->tm_mday << " " << now->tm_hour << ":" << now->tm_min << ":" << now->tm_sec << "]\033[0m "
-              << prefix << message << std::endl;
+    printf(
+        "\033[%dm[%04d-%02d-%02d %02d:%02d:%02d]\033[0m \033[33m[%s]\033[0m %s\n",
+        colorCode,
+        now->tm_year + 1900,
+        now->tm_mon + 1,
+        now->tm_mday,
+        now->tm_hour,
+        now->tm_min,
+        now->tm_sec,
+        method.c_str(),
+        message.c_str());
+}
+
+void Logger::logMovement(int x, int y, int targetX, int targetY)
+{
+    std::stringstream strStream;
+
+    strStream << "Moving from (" << x << "; " << y << ") to (" << targetX << ", " << targetY << ")";
+
+    this->log("Logger::logMovement", strStream.str(), Logger::LogLevel::INFO);
 }

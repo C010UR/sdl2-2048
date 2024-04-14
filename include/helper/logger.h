@@ -20,5 +20,6 @@ class Logger
 
     Logger(bool isDebug);
 
-    void log(std::string message, LogLevel logLevel);
+    void log(std::string method, std::string message, LogLevel logLevel);
+    void logMovement(int x, int y, int targetX, int targetY);
 };

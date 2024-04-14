@@ -5,7 +5,7 @@
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceRoot}/build/tetris.exe",
+            "program": "${workspaceRoot}/build/2048.exe",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
@@ -29,7 +29,7 @@
             "name": "(gdb) Attach",
             "type": "cppdbg",
             "request": "attach",
-            "program": "${workspaceRoot}/build/tetris.exe",
+            "program": "${workspaceRoot}/build/2048.exe",
             "MIMode": "gdb",
             "setupCommands": [
                 {

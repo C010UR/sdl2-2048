@@ -8,10 +8,13 @@ class Config
 {
   public:
     static inline int screenWidth    = 404;
-    static inline int screenHeight   = 800;
+    static inline int screenHeight   = 500;
     static inline int squareSize     = 80;
     static inline int padding        = 12;
     static inline int squareRounding = 5;
+    static inline int fontSize       = 32;
+    static inline int smallFontSize  = 16;
+    static inline int squareNumber   = 4;
 
     static inline SDL_Color              backgroundColor     = {250, 248, 239, 255};
     static inline SDL_Color              fontColor           = {119, 110, 101, 255};
@@ -30,5 +33,20 @@ class Config
         {237, 201, 80, 255},
         {237, 201, 80, 255},
         {237, 201, 80, 255},
-    };
+        {0, 0, 0, 255}};
+
+    static inline std::vector<SDL_Color> fontPowerColors = {
+        {119, 110, 101, 255},
+        {119, 110, 101, 255},
+        {250, 248, 239, 255},
+        {250, 248, 239, 255},
+        {250, 248, 239, 255},
+        {250, 248, 239, 255},
+        {250, 248, 239, 255},
+        {250, 248, 239, 255},
+        {250, 248, 239, 255},
+        {250, 248, 239, 255},
+        {250, 248, 239, 255},
+        {250, 248, 239, 255},
+        {250, 248, 239, 255}};
 };
