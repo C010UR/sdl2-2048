@@ -119,7 +119,7 @@ void App::renderGrid()
     }
 
     this->renderText(
-        "2048.org",
+        "2048.posled",
         Config::padding,
         Config::padding,
         Config::fontColor,
