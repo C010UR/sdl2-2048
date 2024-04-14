@@ -21,9 +21,7 @@ int App::run()
         elapsed = current - previous;
         lag += elapsed;
 
-        while (SDL_PollEvent(&event)) {
-            this->handleEvent(&event);
-        }
+        this->handleEvent(&event);
 
         while ((double)lag >= msPerUpdate) {
             this->update();

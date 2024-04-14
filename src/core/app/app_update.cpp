@@ -4,10 +4,7 @@
 #include <iterator>
 #include <utility>
 
-void App::update()
-{
-
-}
+void App::update() {}
 
 void App::addBlock()
 {
@@ -117,7 +114,6 @@ void App::moveRight()
         }
     }
 
-
     if (movementCount > 0) {
         this->addBlock();
     }
@@ -135,7 +131,6 @@ void App::moveUp()
         }
     }
 
-
     if (movementCount > 0) {
         this->addBlock();
     }
@@ -152,7 +147,6 @@ void App::moveDown()
             }
         }
     }
-
 
     if (movementCount > 0) {
         this->addBlock();
