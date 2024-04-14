@@ -40,7 +40,7 @@ int App::moveHorizontal(int x, int y, int direction)
 
             this->addScore(this->blocks[y][x + direction] + 1);
 
-            return movementCount;
+            return movementCount + 1;
         } else {
             return movementCount;
         }
@@ -71,7 +71,7 @@ int App::moveVertical(int x, int y, int direction)
 
             this->addScore(this->blocks[y + direction][x]);
 
-            return movementCount;
+            return movementCount + 1;
         } else {
             return movementCount;
         }
