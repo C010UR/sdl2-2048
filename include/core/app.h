@@ -34,7 +34,7 @@ class App
     int gridY    = 0;
     int gridSize = 0;
 
-    void renderRectangle(int x1, int y1, int x2, int y2, SDL_Color color);
+    void renderRectangle(int x1, int y1, int x2, int y2, SDL_Color color, int glowSize = 0);
     std::pair<int, int> renderText(std::string msg, int x, int y, SDL_Color fg, SDL_Color bg, bool isSmall = false, bool isCentered = true);
     void renderGrid();
     void renderScore();

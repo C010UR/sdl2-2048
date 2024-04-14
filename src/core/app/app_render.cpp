@@ -25,14 +25,36 @@ void App::render()
     SDL_RenderPresent(this->gRenderer);
 }
 
-void App::renderRectangle(int x1, int y1, int x2, int y2, SDL_Color color)
+void App::renderRectangle(int x1, int y1, int x2, int y2, SDL_Color color, int glowSize)
 {
-    int result =
-        roundedBoxRGBA(this->gRenderer, x1, y1, x2, y2, Config::squareRounding, color.r, color.g, color.b, color.a);
+    // TODO: Figure out antialiasing
+    if (x1 > x2) std::swap(x1, x2);
+    if (y1 > y2) std::swap(y1, y2);
 
-    if (result < 0) {
-        this->logger->log("Canvas::drawRectangle", SDL_GetError(), Logger::LogLevel::ERROR);
+    if (glowSize > 0) {
+        int stepReduction = Config::glowAlpha / glowSize;
+
+        for (int i = 0; i < glowSize; i++) {
+            int       expand = i;
+            SDL_Color glowColor =
+                {color.r, color.g, color.b, static_cast<Uint8>(std::max(0, Config::glowAlpha - stepReduction * i))};
+
+            roundedBoxRGBA(
+                this->gRenderer,
+                x1 - expand,
+                y1 - expand,
+                x2 + expand,
+                y2 + expand,
+                Config::squareRadius + expand,
+                glowColor.r,
+                glowColor.g,
+                glowColor.b,
+                glowColor.a);
+        }
     }
+
+    roundedRectangleRGBA(this->gRenderer, x1, y1, x2, y2, Config::squareRadius, color.r, color.g, color.b, color.a);
+    roundedBoxRGBA(this->gRenderer, x1, y1, x2, y2, Config::squareRadius, color.r, color.g, color.b, color.a);
 }
 
 std::pair<int, int>
@@ -83,10 +105,10 @@ void App::renderGrid()
         this->gridY + this->gridSize,
         Config::gridBackgroundColor);
 
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++) {
-            int cellX = this->gridX + (Config::padding * (i + 1)) + (Config::squareSize * i);
-            int cellY = this->gridY + (Config::padding * (j + 1)) + (Config::squareSize * j);
+    for (int x = 0; x < 4; x++) {
+        for (int y = 0; y < 4; y++) {
+            int cellX = this->gridX + (Config::padding * (x + 1)) + (Config::squareSize * x);
+            int cellY = this->gridY + (Config::padding * (y + 1)) + (Config::squareSize * y);
             this->renderRectangle(
                 cellX,
                 cellY,
@@ -111,11 +133,18 @@ void App::renderBlock(int x, int y)
     int bgX = this->gridX + (Config::padding * (x + 1)) + (Config::squareSize * x);
     int bgY = this->gridY + (Config::padding * (y + 1)) + (Config::squareSize * y);
 
-    int power = this->blocks[x][y];
+    int power = this->blocks[y][x];
 
-    int color = (unsigned)power >= Config::powerColors.size() ? Config::powerColors.size() - 1 : power;
+    Config::BlockData blockData =
+        Config::blockData[(unsigned)power >= Config::blockData.size() ? Config::blockData.size() - 1 : power];
 
-    this->renderRectangle(bgX, bgY, bgX + Config::squareSize, bgY + Config::squareSize, Config::powerColors[color]);
+    this->renderRectangle(
+        bgX,
+        bgY,
+        bgX + Config::squareSize,
+        bgY + Config::squareSize,
+        blockData.bgColor,
+        blockData.glow);
 
     std::stringstream strStream;
     strStream << (unsigned)pow(2, power + 1);
@@ -123,7 +152,7 @@ void App::renderBlock(int x, int y)
     int fntX = bgX + Config::squareSize / 2;
     int fntY = bgY + Config::squareSize / 2;
 
-    this->renderText(strStream.str(), fntX, fntY, Config::fontPowerColors[color], Config::powerColors[color]);
+    this->renderText(strStream.str(), fntX, fntY, blockData.fontColor, blockData.bgColor, blockData.isSmallFont);
 }
 
 void App::renderScore()
@@ -146,7 +175,7 @@ void App::renderScore()
     auto scoreSize = this->renderText(
         "SCORE",
         scoreTextX,
-        scoreY1 + Config::padding,
+        scoreY1 + Config::scoreTextVerticalOffset,
         Config::gridForegroundColor,
         Config::gridBackgroundColor,
         true);
@@ -154,7 +183,7 @@ void App::renderScore()
     this->renderText(
         "BEST",
         bestTextX,
-        scoreY1 + Config::padding,
+        scoreY1 + Config::scoreTextVerticalOffset,
         Config::gridForegroundColor,
         Config::gridBackgroundColor,
         true);
@@ -165,7 +194,7 @@ void App::renderScore()
     this->renderText(
         scoreStream.str(),
         scoreTextX,
-        scoreY1 + scoreSize.second + Config::padding,
+        scoreY1 + scoreSize.second + Config::scoreTextVerticalOffset,
         Config::backgroundColor,
         Config::gridBackgroundColor,
         true);
@@ -176,7 +205,7 @@ void App::renderScore()
     this->renderText(
         bestStream.str(),
         bestTextX,
-        scoreY1 + scoreSize.second + Config::padding,
+        scoreY1 + scoreSize.second + Config::scoreTextVerticalOffset,
         Config::backgroundColor,
         Config::gridBackgroundColor,
         true);
@@ -184,9 +213,9 @@ void App::renderScore()
 
 void App::renderBlocks()
 {
-    for (int x = 0; x < 4; x++) {
-        for (int y = 0; y < 4; y++) {
-            if (this->blocks[x][y] >= 0) {
+    for (int y = 0; y < 4; y++) {
+        for (int x = 0; x < 4; x++) {
+            if (this->blocks[y][x] >= 0) {
                 this->renderBlock(x, y);
             };
         }

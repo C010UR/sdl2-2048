@@ -32,9 +32,6 @@ int App::run()
 
         this->render();
 
-        current = SDL_GetTicks();
-        elapsed = current - previous;
-
         if (msPerFrame > elapsed) {
             SDL_Delay((int)(msPerFrame - elapsed));
         }
