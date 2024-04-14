@@ -18,6 +18,9 @@ void App::update()
         movementCount = this->moveUp();
     }
 
+    this->moveX = 0;
+    this->moveY = 0;
+
     bool hasEmpty = false;
 
     for (int x = 0; x < Config::squareNumber; x++) {
@@ -34,16 +37,14 @@ void App::update()
     }
 
     if (!hasEmpty) {
-        this->isRunning = false;
+        this->initBoard();
+        return;
     }
 
     if (movementCount > 0) {
         this->logger->log("App::update", "Creating a block", Logger::LogLevel::INFO);
         this->addBlock();
     }
-
-    this->moveX = 0;
-    this->moveY = 0;
 }
 
 void App::addBlock()
@@ -78,7 +79,7 @@ int App::moveHorizontal(int x, int y, int direction)
             this->blocks[x + direction][y]++;
             this->blocks[x][y] = -1;
 
-            this->score += pow(2, this->blocks[x + direction][y] + 1);
+            this->addScore(this->blocks[x + direction][y] + 1);
 
             return movementCount;
         } else {
@@ -109,7 +110,7 @@ int App::moveVertical(int x, int y, int direction)
             this->blocks[x][y + direction]++;
             this->blocks[x][y] = -1;
 
-            this->score += pow(2, this->blocks[x][y + direction] + 1);
+            this->addScore(this->blocks[x][y + direction]);
 
             return movementCount;
         } else {
@@ -183,4 +184,13 @@ int App::moveDown()
     }
 
     return movementCount;
+}
+
+void App::addScore(int value)
+{
+    this->score += pow(2, value + 1);
+
+    if (this->score > this->best) {
+        this->best = this->score;
+    }
 }

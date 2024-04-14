@@ -1,5 +1,6 @@
 #include "core/app.h"
 #include "core/config.h"
+
 #include <stdlib.h>
 #include <time.h>
 
@@ -69,6 +70,10 @@ bool App::init()
         this->logger->log("App::init", SDL_GetError(), Logger::LogLevel::ERROR);
     }
 
+    this->gridSize = Config::padding * 5 + Config::squareSize * 4;
+    this->gridX    = (Config::screenWidth - this->gridSize) / 2;
+    this->gridY    = Config::screenHeight - this->gridSize - Config::padding;
+
     this->initBoard();
 
     this->logger->log("App::init", "Everything successfully initialized", Logger::LogLevel::INFO);
@@ -78,11 +83,11 @@ bool App::init()
 
 void App::initBoard()
 {
-    this->gridSize = Config::padding * 5 + Config::squareSize * 4;
-    this->gridX    = (Config::screenWidth - this->gridSize) / 2;
-    this->gridY    = Config::screenHeight - this->gridSize - Config::padding;
+    this->score = 0;
 
     srand(time(nullptr));
+
+    this->blocks.clear();
 
     for (int i = 0; i < Config::squareSize; i++) {
         this->blocks.push_back(std::vector<int>(Config::squareSize, -1));

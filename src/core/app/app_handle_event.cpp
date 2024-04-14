@@ -23,6 +23,9 @@ void App::handleEvent(SDL_Event *event)
             this->logger->log("App::handleEvent", "Catching right movement", Logger::LogLevel::INFO);
             this->moveX = 1;
             this->moveY = 0;
+        } else if (event->key.keysym.sym == SDLK_r) {
+            this->logger->log("App::handleEvent", "Catching restart", Logger::LogLevel::INFO);
+            this->initBoard();
         }
     }
 }

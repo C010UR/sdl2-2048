@@ -53,6 +53,6 @@ executable(
   ],
   include_directories: incdir,
   dependencies: [sdl2_dep, sdl2_ttf_dep, sdl2_gfx_dep],
-  install: true,
-  win_subsystem: 'windows',
+  # install: true,
+  # win_subsystem: 'windows',
 )

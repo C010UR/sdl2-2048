@@ -26,6 +26,7 @@ class App
     std::vector<std::vector<int>> blocks;
 
     int score = 0;
+    int best = 0;
 
     Logger *logger = nullptr;
 
@@ -34,7 +35,7 @@ class App
     int gridSize = 0;
 
     void renderRectangle(int x1, int y1, int x2, int y2, SDL_Color color);
-    void renderText(std::string msg, int x, int y, SDL_Color fg, SDL_Color bg, bool isSmall = false);
+    std::pair<int, int> renderText(std::string msg, int x, int y, SDL_Color fg, SDL_Color bg, bool isSmall = false, bool isCentered = true);
     void renderGrid();
     void renderScore();
     void renderBlocks();
@@ -51,6 +52,7 @@ class App
     int moveDown();
     int moveHorizontal(int x, int y, int direction);
     int moveVertical(int x, int y, int direction);
+    void addScore(int value);
 
   public:
     App(Logger *logger, int ups = 60, int fps = -1);

@@ -35,35 +35,43 @@ void App::renderRectangle(int x1, int y1, int x2, int y2, SDL_Color color)
     }
 }
 
-void App::renderText(std::string msg, int x, int y, SDL_Color fg, SDL_Color bg, bool isSmall)
+std::pair<int, int>
+App::renderText(std::string msg, int x, int y, SDL_Color fg, SDL_Color bg, bool isSmall, bool isCentered)
 {
     SDL_Surface *surface = TTF_RenderText_Shaded(isSmall ? this->smallFont : this->font, msg.c_str(), fg, bg);
 
     if (surface == nullptr) {
         logger->log("App::renderText", SDL_GetError(), Logger::LogLevel::ERROR);
-        return;
+        return {-1, -1};
     }
 
     SDL_Texture *texture = SDL_CreateTextureFromSurface(this->gRenderer, surface);
 
     if (texture == nullptr) {
         logger->log("App::renderText", SDL_GetError(), Logger::LogLevel::ERROR);
-        return;
+        return {-1, -1};
     }
 
     int textW = 0;
     int textH = 0;
 
     SDL_QueryTexture(texture, nullptr, nullptr, &textW, &textH);
-    SDL_Rect dstRect = {x - textW / 2, y - textH / 2, textW, textH};
+    SDL_Rect dstRect = {x, y, textW, textH};
+
+    if (isCentered) {
+        dstRect.x = x - textW / 2;
+        dstRect.y = y - textH / 2;
+    }
 
     if (SDL_RenderCopy(this->gRenderer, texture, nullptr, &dstRect) < 0) {
         logger->log("App::renderText", SDL_GetError(), Logger::LogLevel::ERROR);
-        return;
+        return {-1, -1};
     }
 
     SDL_FreeSurface(surface);
     SDL_DestroyTexture(texture);
+
+    return {textW, textH};
 }
 
 void App::renderGrid()
@@ -88,7 +96,14 @@ void App::renderGrid()
         }
     }
 
-    this->renderText("2048.org", this->gridX + 72, this->gridY - 72, Config::fontColor, Config::backgroundColor);
+    this->renderText(
+        "2048.org",
+        Config::padding,
+        Config::padding,
+        Config::fontColor,
+        Config::backgroundColor,
+        false,
+        false);
 }
 
 void App::renderBlock(int x, int y)
@@ -113,21 +128,58 @@ void App::renderBlock(int x, int y)
 
 void App::renderScore()
 {
-    int x1 = this->gridX + this->gridSize - 128;
-    int y1 = this->gridY - 96;
-    int x2 = this->gridX + this->gridSize;
-    int y2 = this->gridY - 40;
+    int scoreX1 = this->gridX + this->gridSize - Config::scoreWidth;
+    int scoreX2 = scoreX1 + Config::scoreWidth;
 
-    this->renderRectangle(x1, y1, x2, y2, Config::gridBackgroundColor);
+    int scoreY1 = this->gridY - Config::padding - Config::scoreHeight;
+    int scoreY2 = this->gridY - Config::padding;
 
-    int textX = x1 + ((x2 - x1) / 2);
+    int bestX1 = scoreX1 - Config::padding - Config::scoreWidth;
+    int bestX2 = bestX1 + Config::scoreWidth;
 
-    this->renderText("SCORE", textX, y1 + 16, Config::gridForegroundColor, Config::gridBackgroundColor, true);
+    this->renderRectangle(scoreX1, scoreY1, scoreX2, scoreY2, Config::gridBackgroundColor);
+    this->renderRectangle(bestX1, scoreY1, bestX2, scoreY2, Config::gridBackgroundColor);
 
-    std::stringstream strStream;
-    strStream << this->score;
+    int scoreTextX = scoreX1 + ((scoreX2 - scoreX1) / 2);
+    int bestTextX  = bestX1 + ((bestX2 - bestX1) / 2);
 
-    this->renderText(strStream.str(), textX, y1 + 36, Config::backgroundColor, Config::gridBackgroundColor, true);
+    auto scoreSize = this->renderText(
+        "SCORE",
+        scoreTextX,
+        scoreY1 + Config::padding,
+        Config::gridForegroundColor,
+        Config::gridBackgroundColor,
+        true);
+
+    this->renderText(
+        "BEST",
+        bestTextX,
+        scoreY1 + Config::padding,
+        Config::gridForegroundColor,
+        Config::gridBackgroundColor,
+        true);
+
+    std::stringstream scoreStream;
+    scoreStream << this->score;
+
+    this->renderText(
+        scoreStream.str(),
+        scoreTextX,
+        scoreY1 + scoreSize.second + Config::padding,
+        Config::backgroundColor,
+        Config::gridBackgroundColor,
+        true);
+
+    std::stringstream bestStream;
+    bestStream << this->best;
+
+    this->renderText(
+        bestStream.str(),
+        bestTextX,
+        scoreY1 + scoreSize.second + Config::padding,
+        Config::backgroundColor,
+        Config::gridBackgroundColor,
+        true);
 }
 
 void App::renderBlocks()

@@ -7,14 +7,17 @@
 class Config
 {
   public:
-    static inline int screenWidth    = 404;
-    static inline int screenHeight   = 500;
-    static inline int squareSize     = 80;
-    static inline int padding        = 12;
-    static inline int squareRounding = 5;
-    static inline int fontSize       = 32;
-    static inline int smallFontSize  = 16;
-    static inline int squareNumber   = 4;
+    static inline int screenWidth             = 404;
+    static inline int screenHeight            = 550;
+    static inline int squareSize              = 80;
+    static inline int padding                 = 12;
+    static inline int squareRounding          = 5;
+    static inline int fontSize                = 32;
+    static inline int smallFontSize           = 16;
+    static inline int squareNumber            = 4;
+    static inline int scoreWidth              = 128;
+    static inline int scoreHeight             = 52;
+    static inline int scoreTextVerticalOffset = 16;
 
     static inline SDL_Color              backgroundColor     = {250, 248, 239, 255};
     static inline SDL_Color              fontColor           = {119, 110, 101, 255};
