@@ -7,8 +7,8 @@
 class Config
 {
   public:
-    static inline int screenWidth             = 404;
-    static inline int screenHeight            = 560;
+    static inline int screenWidth             = 508;
+    static inline int screenHeight            = 680;
     static inline int squareSize              = 80;
     static inline int padding                 = 12;
     static inline int squareRadius            = 10;

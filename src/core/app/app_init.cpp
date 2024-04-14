@@ -35,6 +35,14 @@ bool App::init()
 
     this->logger->log("App::init", "Initializing the window", Logger::LogLevel::INFO);
 
+    this->gridSize = Config::padding * (Config::squareNumber + 1) + Config::squareSize * Config::squareNumber;
+
+    Config::screenWidth = this->gridSize + Config::padding * 2;
+    Config::screenHeight = this->gridSize + Config::padding * 2 + 160;
+    
+    this->gridX    = (Config::screenWidth - this->gridSize) / 2;
+    this->gridY    = Config::screenHeight - this->gridSize - Config::padding;
+
     this->gWindow = SDL_CreateWindow(
         "2048",
         SDL_WINDOWPOS_CENTERED,
@@ -69,10 +77,6 @@ bool App::init()
     if (this->smallFont == nullptr) {
         this->logger->log("App::init", SDL_GetError(), Logger::LogLevel::ERROR);
     }
-
-    this->gridSize = Config::padding * 5 + Config::squareSize * 4;
-    this->gridX    = (Config::screenWidth - this->gridSize) / 2;
-    this->gridY    = Config::screenHeight - this->gridSize - Config::padding;
 
     this->initBoard();
 

@@ -105,8 +105,8 @@ void App::renderGrid()
         this->gridY + this->gridSize,
         Config::gridBackgroundColor);
 
-    for (int x = 0; x < 4; x++) {
-        for (int y = 0; y < 4; y++) {
+    for (int x = 0; x < Config::squareNumber; x++) {
+        for (int y = 0; y < Config::squareNumber; y++) {
             int cellX = this->gridX + (Config::padding * (x + 1)) + (Config::squareSize * x);
             int cellY = this->gridY + (Config::padding * (y + 1)) + (Config::squareSize * y);
             this->renderRectangle(
@@ -213,8 +213,8 @@ void App::renderScore()
 
 void App::renderBlocks()
 {
-    for (int y = 0; y < 4; y++) {
-        for (int x = 0; x < 4; x++) {
+    for (int y = 0; y < Config::squareNumber; y++) {
+        for (int x = 0; x < Config::squareNumber; x++) {
             if (this->blocks[y][x] >= 0) {
                 this->renderBlock(x, y);
             };
