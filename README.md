@@ -2,6 +2,10 @@
 
 ## Overview
 
+![image_2024-04-15_00-20-06](https://github.com/C010UR/sdl2-2048/assets/95462776/03a08e20-ca6f-4dff-a524-5495bcb4d010)
+
+https://github.com/C010UR/sdl2-2048/assets/95462776/295034a8-4bc1-45b0-a475-4db7f846e2e8
+
 This is SDL2 implementation of the 2048
 
 This project is built with
