@@ -1,5 +1,6 @@
 #include "core/app.h"
 #include "core/config.h"
+#include "helper/logger.h"
 
 #include <iterator>
 #include <utility>
@@ -20,7 +21,8 @@ void App::addBlock()
 
     std::pair<int, int> target = emptySpaces[emptySpaces.size() == 1 ? 0 : rand() % emptySpaces.size()];
 
-    this->blocks[target.second][target.first] = rand() % 2;
+    this->logger->log("App::addBlock", "Adding block", Logger::LogLevel::INFO);
+    this->blocks[target.second][target.first] = rand() % 10 > 6 ? 1 : 0;
 }
 
 int App::moveHorizontal(int x, int y, int direction)
