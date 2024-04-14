@@ -7,7 +7,10 @@ void App::handleEvent(SDL_Event *event)
         this->logger->log("App::handleEvent", "Catching Exit event", Logger::LogLevel::INFO);
         this->isRunning = false;
     } else if (event->type == SDL_EventType::SDL_KEYDOWN) {
-        if (event->key.keysym.sym == SDLK_w || event->key.keysym.sym == SDLK_UP) {
+        if (event->key.keysym.sym == SDLK_ESCAPE) {
+            this->logger->log("App::handleEvent", "Catching Exit event", Logger::LogLevel::INFO);
+            this->isRunning = false;
+        } else if (event->key.keysym.sym == SDLK_w || event->key.keysym.sym == SDLK_UP) {
             this->logger->log("App::handleEvent", "Catching up movement", Logger::LogLevel::INFO);
             this->moveX = 0;
             this->moveY = 1;
