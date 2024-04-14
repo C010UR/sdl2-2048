@@ -6,25 +6,7 @@
 
 void App::update()
 {
-    int movementCount = 0;
 
-    if (this->moveX == -1) {
-        movementCount = this->moveLeft();
-    } else if (this->moveX == 1) {
-        movementCount = this->moveRight();
-    } else if (this->moveY == -1) {
-        movementCount = this->moveDown();
-    } else if (this->moveY == 1) {
-        movementCount = this->moveUp();
-    }
-
-    this->moveX = 0;
-    this->moveY = 0;
-
-    if (movementCount > 0) {
-        this->logger->log("App::update", "Creating a block", Logger::LogLevel::INFO);
-        this->addBlock();
-    }
 }
 
 void App::addBlock()
@@ -39,7 +21,7 @@ void App::addBlock()
         }
     }
 
-    std::pair<int, int> target = emptySpaces[rand() % emptySpaces.size()];
+    std::pair<int, int> target = emptySpaces[emptySpaces.size() == 1 ? 0 : rand() % emptySpaces.size()];
 
     this->blocks[target.second][target.first] = rand() % 2;
 }
@@ -106,7 +88,7 @@ int App::moveVertical(int x, int y, int direction)
     return movementCount;
 }
 
-int App::moveLeft()
+void App::moveLeft()
 {
     int movementCount = 0;
 
@@ -118,10 +100,12 @@ int App::moveLeft()
         }
     }
 
-    return movementCount;
+    if (movementCount > 0) {
+        this->addBlock();
+    }
 }
 
-int App::moveRight()
+void App::moveRight()
 {
     int movementCount = 0;
 
@@ -133,10 +117,13 @@ int App::moveRight()
         }
     }
 
-    return movementCount;
+
+    if (movementCount > 0) {
+        this->addBlock();
+    }
 }
 
-int App::moveUp()
+void App::moveUp()
 {
     int movementCount = 0;
 
@@ -148,10 +135,13 @@ int App::moveUp()
         }
     }
 
-    return movementCount;
+
+    if (movementCount > 0) {
+        this->addBlock();
+    }
 }
 
-int App::moveDown()
+void App::moveDown()
 {
     int movementCount = 0;
 
@@ -163,7 +153,10 @@ int App::moveDown()
         }
     }
 
-    return movementCount;
+
+    if (movementCount > 0) {
+        this->addBlock();
+    }
 }
 
 void App::addScore(int value)

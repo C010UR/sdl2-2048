@@ -46,10 +46,10 @@ class App
 
     void initBoard();
     void addBlock();
-    int moveLeft();
-    int moveRight();
-    int moveUp();
-    int moveDown();
+    void moveLeft();
+    void moveRight();
+    void moveUp();
+    void moveDown();
     int moveHorizontal(int x, int y, int direction);
     int moveVertical(int x, int y, int direction);
     void addScore(int value);
