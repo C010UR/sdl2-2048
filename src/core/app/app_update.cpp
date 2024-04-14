@@ -21,26 +21,6 @@ void App::update()
     this->moveX = 0;
     this->moveY = 0;
 
-    bool hasEmpty = false;
-
-    for (int y = 0; y < Config::squareNumber; y++) {
-        for (int x = 0; x < Config::squareNumber; x++) {
-            if (this->blocks[y][x] < 0) {
-                hasEmpty = true;
-                break;
-            }
-        }
-
-        if (hasEmpty) {
-            break;
-        }
-    }
-
-    if (!hasEmpty) {
-        this->initBoard();
-        return;
-    }
-
     if (movementCount > 0) {
         this->logger->log("App::update", "Creating a block", Logger::LogLevel::INFO);
         this->addBlock();
@@ -145,8 +125,8 @@ int App::moveRight()
 {
     int movementCount = 0;
 
-    for (int x = 0; x < Config::squareNumber; x++) {
-        for (int y = Config::squareNumber - 1; y >= 0; y--) {
+    for (int x = Config::squareNumber - 1; x >= 0; x--) {
+        for (int y = 0; y < Config::squareNumber; y++) {
             if (this->blocks[y][x] >= 0) {
                 movementCount += this->moveHorizontal(x, y, 1);
             }
